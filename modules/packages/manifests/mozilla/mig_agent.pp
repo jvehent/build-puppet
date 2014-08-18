@@ -21,7 +21,7 @@ class packages::mozilla::mig_agent {
                     # where needed. Agent init process is described at
                     # https://github.com/mozilla/mig/blob/master/doc/concepts.rst
                     'mig-agent':
-                        ensure => '201408061401+ce538e7.prod-1'
+                        ensure => '201408181131+68245f0.prod-1'
                 }
             }
         }
