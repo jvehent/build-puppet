@@ -59,6 +59,12 @@ class packages::setup {
 
                 "mig-agent":
                     url_path => "repos/yum/custom/mig-agent/$architecture";
+
+                "git-remote-hg":
+                    url_path => "repos/yum/custom/git-remote-hg/$architecture";
+
+                "openssl":
+                    url_path => "repos/yum/custom/openssl/$architecture";
             }
 
             # to flush the metadata cache, increase this value by one (or
@@ -153,6 +159,10 @@ class packages::setup {
                     components   => ["main"];
                 "mig-agent":
                     url_path     => "repos/apt/custom/mig-agent",
+                    distribution => "${lsbdistcodename}",
+                    components   => ["all"];
+                "openssl":
+                    url_path     => "repos/apt/custom/openssl",
                     distribution => "${lsbdistcodename}",
                     components   => ["all"];
             }

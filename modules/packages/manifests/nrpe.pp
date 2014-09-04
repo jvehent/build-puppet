@@ -6,9 +6,16 @@ class packages::nrpe {
         Ubuntu: {
             package {
                 "nagios-nrpe-server":
-                    ensure => latest;
+                    ensure => latest,
+                    install_options => [ '--no-install-recommends' ];
                 "nagios-nrpe-plugin":
-                    ensure => latest;
+                    ensure => latest,
+                    install_options => [ '--no-install-recommends' ];
+                # This is a temporary solution to removing nagios3 from
+                # a time before --no-install-recommends was available
+                # see bug 1006891
+                "nagios3":
+                    ensure => absent;
             }
         }
         CentOS: {

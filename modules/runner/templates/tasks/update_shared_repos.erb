@@ -4,6 +4,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 # Make sure runner runs at boot
 
+set -e
+
 # Update any shared repos we have
 if [ -z "$HG_SHARE_BASE_DIR" ]; then
     echo "HG_SHARE_BASE_DIR not set; exiting"
@@ -16,7 +18,10 @@ if [ "$USER" != "<%= scope.lookupvar('::config::builder_username') %>" ]; then
 fi
 
 echo "Updating hg repos in $HG_SHARE_BASE_DIR"
-find "$HG_SHARE_BASE_DIR" -type d -name .hg -not -wholename '*l10n*' -not -wholename '*try*' -prune -printf '%h\0' | xargs -0 -P4 -t -n 1 hg pull -R
-
-# Ignore failures, they are not critical
-exit 0
+find "$HG_SHARE_BASE_DIR" -type d -name .hg -not -wholename '*l10n*' -not -wholename '*try*' -prune -printf '%h\n' | while read repo; do
+    if [ ! -e "$repo/.hg/hgrc" ]; then
+        echo "Skipping $repo with missing hgrc" >&2
+     else
+        printf "$repo\0"
+    fi
+done | xargs -0 -P4 -t -n 1 hg pull -R
